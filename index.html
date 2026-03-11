@@ -19,15 +19,20 @@
     body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; min-height: 100vh; overflow-x: hidden; }
     body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.4; }
 
+    /* PROGRESS BAR */
+    #progressBar { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); width: 0%; z-index: 9998; transition: width 0.3s ease, opacity 0.4s ease; opacity: 0; }
+    #progressBar.active { opacity: 1; }
+
     /* NAV */
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 48px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid transparent; transition: border-color 0.3s, background 0.3s; }
     nav.scrolled { border-color: var(--border); background: rgba(10,10,10,0.92); backdrop-filter: blur(12px); }
     .logo { font-family: 'Instrument Serif', serif; font-size: 22px; color: var(--text); letter-spacing: -0.5px; cursor: pointer; }
     .logo span { color: var(--accent); }
-    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
     .nav-tag { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
-    .nav-history-btn { background: transparent; border: 1px solid var(--border); border-radius: 2px; color: var(--text-muted); cursor: pointer; padding: 5px 12px; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; font-family: 'DM Sans', sans-serif; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
-    .nav-history-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .nav-btn { background: transparent; border: 1px solid var(--border); border-radius: 2px; color: var(--text-muted); cursor: pointer; padding: 5px 12px; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; font-family: 'DM Sans', sans-serif; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+    .nav-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .history-count { font-size: 10px; background: rgba(200,184,154,0.12); color: var(--accent); padding: 2px 7px; border-radius: 10px; }
 
     /* HERO */
     .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 120px 24px 80px; position: relative; }
@@ -36,15 +41,16 @@
     .hero-title { font-family: 'Instrument Serif', serif; font-size: clamp(52px, 8vw, 96px); line-height: 1.0; text-align: center; letter-spacing: -2px; max-width: 800px; margin-bottom: 24px; opacity: 0; animation: fadeUp 0.8s 0.4s forwards; }
     .hero-title em { font-style: italic; color: var(--accent); }
     .hero-subtitle { font-size: 16px; color: var(--text-muted); text-align: center; max-width: 420px; line-height: 1.7; margin-bottom: 56px; font-weight: 300; opacity: 0; animation: fadeUp 0.8s 0.6s forwards; }
-
-    /* SEARCH */
     .search-container { width: 100%; max-width: 620px; opacity: 0; animation: fadeUp 0.8s 0.8s forwards; }
     .search-wrap { background: var(--surface); border: 1px solid var(--border-light); border-radius: 4px; display: flex; align-items: center; transition: border-color 0.2s, box-shadow 0.2s; }
     .search-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(200,184,154,0.08); }
     .search-icon { padding: 0 16px 0 20px; color: var(--text-muted); flex-shrink: 0; }
     #searchInput { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 300; padding: 18px 0; caret-color: var(--accent); }
     #searchInput::placeholder { color: var(--text-dim); }
-    #searchBtn { margin: 6px; padding: 10px 24px; background: var(--accent); color: #0a0a0a; border: none; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.5px; cursor: pointer; transition: background 0.2s, transform 0.1s; white-space: nowrap; }
+    .search-actions { display: flex; align-items: center; gap: 6px; margin-right: 6px; }
+    .surprise-btn { padding: 8px 14px; background: transparent; border: 1px solid var(--border); color: var(--text-muted); border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .surprise-btn:hover { color: var(--accent); border-color: var(--accent); }
+    #searchBtn { padding: 10px 24px; background: var(--accent); color: #0a0a0a; border: none; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.5px; cursor: pointer; transition: background 0.2s, transform 0.1s; white-space: nowrap; }
     #searchBtn:hover { background: var(--accent-bright); }
     #searchBtn:active { transform: scale(0.98); }
     .suggestions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; justify-content: center; }
@@ -55,14 +61,15 @@
     #resultSection { display: none; max-width: 760px; margin: 0 auto; padding: 100px 24px 120px; }
     #resultSection.visible { display: block; }
     .result-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 48px; gap: 16px; }
-    .new-search-btn { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); background: transparent; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: color 0.2s; padding: 0; flex-shrink: 0; }
-    .new-search-btn:hover { color: var(--accent); }
-    .new-search-input-wrap { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border-light); border-radius: 4px; padding: 0 8px 0 16px; flex: 1; max-width: 460px; transition: border-color 0.2s; }
+    .home-btn { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); background: transparent; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: color 0.2s; padding: 0; flex-shrink: 0; }
+    .home-btn:hover { color: var(--accent); }
+    .new-search-input-wrap { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border-light); border-radius: 4px; padding: 0 6px 0 16px; flex: 1; max-width: 460px; transition: border-color 0.2s; }
     .new-search-input-wrap:focus-within { border-color: var(--accent); }
     #newSearchInput { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 300; padding: 12px 0; caret-color: var(--accent); }
     #newSearchInput::placeholder { color: var(--text-dim); }
-    #newSearchBtn { padding: 7px 16px; background: var(--accent); color: #0a0a0a; border: none; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+    #newSearchBtn { padding: 7px 14px; background: var(--accent); color: #0a0a0a; border: none; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
     #newSearchBtn:hover { background: var(--accent-bright); }
+
     .result-topic { font-family: 'Instrument Serif', serif; font-size: clamp(28px, 4vw, 42px); letter-spacing: -1px; margin-bottom: 8px; }
     .result-meta { font-size: 12px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 40px; }
     .level-tabs { display: flex; margin-bottom: 40px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; width: fit-content; }
@@ -91,33 +98,67 @@
     .bar-seg.filled[data-level="simple"] { background: var(--simple); }
     .bar-seg.filled[data-level="intermediate"] { background: var(--intermediate); }
     .bar-seg.filled[data-level="expert"] { background: var(--expert); }
-    .result-actions { display: flex; gap: 12px; margin-top: 24px; }
-    .action-btn { font-size: 12px; color: var(--text-muted); border: 1px solid var(--border); border-radius: 2px; padding: 8px 16px; cursor: pointer; background: transparent; font-family: 'DM Sans', sans-serif; transition: all 0.2s; letter-spacing: 0.5px; }
+
+    /* ACTION BUTTONS */
+    .result-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .action-btn { font-size: 12px; color: var(--text-muted); border: 1px solid var(--border); border-radius: 2px; padding: 8px 16px; cursor: pointer; background: transparent; font-family: 'DM Sans', sans-serif; transition: all 0.2s; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
     .action-btn:hover { color: var(--accent); border-color: var(--accent); }
-    .error-msg { color: var(--expert); font-size: 14px; padding: 20px 16px; border-left: 2px solid var(--expert); line-height: 1.6; }
+    .action-btn.speaking { color: var(--simple); border-color: var(--simple); }
+
+    /* RELATED TOPICS */
+    .related-section { margin-top: 48px; border-top: 1px solid var(--border); padding-top: 32px; }
+    .related-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+    .related-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .related-chip { font-size: 13px; color: var(--text-muted); border: 1px solid var(--border); border-radius: 2px; padding: 8px 16px; cursor: pointer; transition: all 0.2s; background: transparent; font-family: 'DM Sans', sans-serif; }
+    .related-chip:hover { color: var(--accent); border-color: var(--accent); background: rgba(200,184,154,0.04); }
+
+    /* QUIZ MODAL */
+    .quiz-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(10px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 24px; animation: fadeIn 0.3s ease; }
+    .quiz-overlay.hidden { display: none; }
+    .quiz-modal { background: var(--surface); border: 1px solid var(--border-light); border-radius: 6px; padding: 44px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; }
+    .quiz-eyebrow { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .quiz-topic { font-family: 'Instrument Serif', serif; font-size: 24px; letter-spacing: -0.5px; margin-bottom: 32px; }
+    .quiz-loading { color: var(--text-muted); font-size: 14px; display: flex; align-items: center; gap: 12px; padding: 20px 0; }
+    .quiz-question { margin-bottom: 28px; }
+    .quiz-q-text { font-size: 16px; color: var(--text); line-height: 1.6; margin-bottom: 16px; font-weight: 400; }
+    .quiz-q-num { font-size: 11px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+    .quiz-option { padding: 12px 16px; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; font-size: 14px; color: var(--text-muted); background: transparent; font-family: 'DM Sans', sans-serif; text-align: left; transition: all 0.2s; line-height: 1.5; }
+    .quiz-option:hover:not(.answered) { border-color: var(--accent); color: var(--accent); }
+    .quiz-option.correct { border-color: var(--simple); color: var(--simple); background: rgba(74,158,122,0.08); }
+    .quiz-option.wrong { border-color: var(--expert); color: var(--expert); background: rgba(200,96,74,0.08); }
+    .quiz-option.reveal { border-color: var(--simple); color: var(--simple); background: rgba(74,158,122,0.08); }
+    .quiz-explanation { font-size: 13px; color: var(--text-muted); margin-top: 12px; padding: 12px; background: var(--bg); border-radius: 3px; line-height: 1.6; display: none; }
+    .quiz-score { text-align: center; padding: 20px 0; }
+    .quiz-score-num { font-family: 'Instrument Serif', serif; font-size: 52px; color: var(--accent); letter-spacing: -2px; }
+    .quiz-score-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    .quiz-close-btn { width: 100%; margin-top: 24px; padding: 13px; background: var(--accent); color: #0a0a0a; border: none; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+    .quiz-close-btn:hover { background: var(--accent-bright); }
+    .quiz-retry-btn { width: 100%; margin-top: 10px; padding: 11px; background: transparent; color: var(--text-muted); border: 1px solid var(--border); border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+    .quiz-retry-btn:hover { color: var(--accent); border-color: var(--accent); }
 
     /* HISTORY PANEL */
     .history-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); z-index: 500; display: flex; justify-content: flex-end; animation: fadeIn 0.2s ease; }
     .history-overlay.hidden { display: none; }
-    .history-panel { width: 100%; max-width: 380px; background: var(--surface); border-left: 1px solid var(--border-light); height: 100%; overflow-y: auto; display: flex; flex-direction: column; animation: slideIn 0.3s ease; }
-    .history-header { padding: 28px 28px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--surface); z-index: 1; }
+    .history-panel { width: 100%; max-width: 360px; background: var(--surface); border-left: 1px solid var(--border-light); height: 100%; overflow-y: auto; display: flex; flex-direction: column; animation: slideIn 0.3s ease; }
+    .history-header { padding: 28px 24px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--surface); }
     .history-title { font-family: 'Instrument Serif', serif; font-size: 20px; letter-spacing: -0.5px; }
-    .history-close { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 20px; line-height: 1; transition: color 0.2s; }
+    .history-close { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 20px; }
     .history-close:hover { color: var(--text); }
-    .history-list { padding: 16px; flex: 1; }
+    .history-list { padding: 12px; flex: 1; }
     .history-empty { text-align: center; color: var(--text-muted); font-size: 13px; padding: 48px 24px; line-height: 1.7; }
-    .history-item { padding: 14px 16px; border-radius: 3px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; margin-bottom: 8px; }
+    .history-item { padding: 12px 14px; border-radius: 3px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; margin-bottom: 6px; }
     .history-item:hover { background: rgba(200,184,154,0.05); border-color: var(--border); }
-    .history-item-topic { font-size: 15px; color: var(--text); margin-bottom: 4px; font-family: 'Instrument Serif', serif; letter-spacing: -0.3px; }
-    .history-item-meta { font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; }
-    .history-clear { margin: 0 16px 16px; padding: 10px; background: transparent; border: 1px solid var(--border); border-radius: 3px; color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 12px; cursor: pointer; width: calc(100% - 32px); transition: all 0.2s; letter-spacing: 0.5px; }
+    .history-item-topic { font-size: 14px; color: var(--text); margin-bottom: 3px; font-family: 'Instrument Serif', serif; }
+    .history-item-meta { font-size: 11px; color: var(--text-muted); }
+    .history-clear { margin: 0 12px 16px; padding: 10px; background: transparent; border: 1px solid var(--border); border-radius: 3px; color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 12px; cursor: pointer; width: calc(100% - 24px); transition: all 0.2s; }
     .history-clear:hover { color: var(--expert); border-color: var(--expert); }
-    .history-count { font-size: 10px; background: rgba(200,184,154,0.12); color: var(--accent); padding: 2px 7px; border-radius: 10px; letter-spacing: 0.5px; }
 
-    /* FOOTER */
+    .error-msg { color: var(--expert); font-size: 14px; padding: 20px 16px; border-left: 2px solid var(--expert); line-height: 1.6; }
+
     footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 14px 48px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); background: rgba(10,10,10,0.95); backdrop-filter: blur(12px); z-index: 50; }
-    .footer-text { font-size: 11px; color: var(--text-dim); letter-spacing: 0.5px; }
-    .footer-credit { font-size: 11px; color: var(--text-dim); letter-spacing: 0.5px; }
+    .footer-text { font-size: 11px; color: var(--text-dim); }
+    .footer-credit { font-size: 11px; color: var(--text-dim); }
     .footer-credit span { color: var(--accent); }
 
     @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -131,19 +172,32 @@
       .explanation-card { padding: 24px; font-size: 15px; }
       footer { padding: 12px 20px; }
       .footer-credit { display: none; }
-      .level-tab { padding: 10px 16px; font-size: 12px; }
+      .level-tab { padding: 10px 14px; font-size: 12px; }
       .nav-tag { display: none; }
       .result-topbar { flex-direction: column; align-items: flex-start; }
       .new-search-input-wrap { max-width: 100%; width: 100%; }
       .history-panel { max-width: 100%; }
+      .quiz-modal { padding: 28px 20px; }
     }
   </style>
 </head>
 <body>
 
+<!-- PROGRESS BAR -->
+<div id="progressBar"></div>
+
+<!-- QUIZ MODAL -->
+<div class="quiz-overlay hidden" id="quizOverlay">
+  <div class="quiz-modal">
+    <p class="quiz-eyebrow">Test yourself</p>
+    <div class="quiz-topic" id="quizTopic"></div>
+    <div id="quizContent"></div>
+  </div>
+</div>
+
 <!-- HISTORY PANEL -->
 <div class="history-overlay hidden" id="historyOverlay" onclick="closeHistoryOnOverlay(event)">
-  <div class="history-panel" id="historyPanel">
+  <div class="history-panel">
     <div class="history-header">
       <span class="history-title">History</span>
       <button class="history-close" onclick="closeHistory()">✕</button>
@@ -158,7 +212,7 @@
   <div class="logo" onclick="goHome()">Gr<span>a</span>sp</div>
   <div class="nav-right">
     <span class="nav-tag">Understand Anything</span>
-    <button class="nav-history-btn" onclick="openHistory()">
+    <button class="nav-btn" onclick="openHistory()">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       History <span class="history-count" id="historyCount" style="display:none">0</span>
     </button>
@@ -174,12 +228,13 @@
   <div class="search-container">
     <div class="search-wrap">
       <span class="search-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-        </svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       </span>
-      <input type="text" id="searchInput" placeholder="Try 'pyramids & mummies', 'black holes', 'how EMI works'..." autocomplete="off" />
-      <button id="searchBtn" onclick="handleSearch()">Explain</button>
+      <input type="text" id="searchInput" placeholder="Try 'black holes', 'how EMI works', 'DNA'..." autocomplete="off" />
+      <div class="search-actions">
+        <button class="surprise-btn" onclick="surpriseMe()">✦ Surprise me</button>
+        <button id="searchBtn" onclick="handleSearch()">Explain</button>
+      </div>
     </div>
     <div class="suggestions">
       <button class="suggestion-pill" onclick="quickSearch('Pyramids and mummies')">Pyramids & mummies</button>
@@ -194,10 +249,8 @@
 <!-- RESULT -->
 <section id="resultSection">
   <div class="result-topbar">
-    <button class="new-search-btn" onclick="goHome()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M19 12H5M12 19l-7-7 7-7"/>
-      </svg>
+    <button class="home-btn" onclick="goHome()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       Home
     </button>
     <div class="new-search-input-wrap">
@@ -205,6 +258,7 @@
       <button id="newSearchBtn" onclick="handleNewSearch()">Explain</button>
     </div>
   </div>
+
   <div class="result-topic" id="resultTopic"></div>
   <div class="result-meta">Simple · Intermediate · Expert</div>
   <div class="complexity-bar">
@@ -215,19 +269,39 @@
   </div>
   <div class="level-tabs">
     <button class="level-tab active" data-level="simple" onclick="switchLevel('simple')"><span class="level-dot"></span>Simple</button>
-    <button class="level-tab" data-level="intermediate" onclick="switchLevel('intermediate')"><span class="level-dot"></span>Intermediate</button>
+    <button class="level-tab" data-level="intermediate" onclick="switchLevel('intermediate')"><span class="level-tab-text">Intermediate</span></button>
     <button class="level-tab" data-level="expert" onclick="switchLevel('expert')"><span class="level-dot"></span>Expert</button>
   </div>
   <div id="panel-simple" class="content-panel active"><div class="explanation-card" id="content-simple"></div></div>
   <div id="panel-intermediate" class="content-panel"><div class="explanation-card" id="content-intermediate"></div></div>
   <div id="panel-expert" class="content-panel"><div class="explanation-card" id="content-expert"></div></div>
+
   <div class="result-actions">
-    <button class="action-btn" onclick="copyExplanation()">Copy explanation</button>
-    <button class="action-btn" onclick="shareGrasp()">Share</button>
+    <button class="action-btn" onclick="copyExplanation()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy
+    </button>
+    <button class="action-btn" id="readAloudBtn" onclick="toggleReadAloud()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+      Read Aloud
+    </button>
+    <button class="action-btn" onclick="startQuiz()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Quiz me
+    </button>
+    <button class="action-btn" onclick="shareGrasp()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Share
+    </button>
+  </div>
+
+  <!-- RELATED TOPICS -->
+  <div class="related-section" id="relatedSection" style="display:none">
+    <p class="related-title">Explore related</p>
+    <div class="related-chips" id="relatedChips"></div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <span class="footer-text">Grasp — Understand Anything</span>
   <span class="footer-credit">Crafted with care by <span>Riyansh Garg</span></span>
@@ -235,43 +309,66 @@
 
 <script>
   const DEVELOPER_RESPONSE = "Grasp was conceived, designed, and built by Riyansh Garg — a developer with a passion for making knowledge genuinely accessible to everyone, at every level of understanding. The idea was simple: no matter who you are or what your background is, you deserve a clear, honest explanation of anything you're curious about.";
-
   const DEVELOPER_KEYWORDS = /who (made|built|created|developed|founded|is behind|designed)|developer|founder|creator|author|owner|riyansh|about (this|grasp)|who are you|tell me about (this|grasp)/i;
+
+  const SURPRISE_TOPICS = [
+    "How do black holes evaporate?", "Why do we dream?", "How does GPS work?",
+    "What is dark matter?", "How do vaccines work?", "Why is the sky blue?",
+    "How does the internet work?", "What is consciousness?", "How do airplanes fly?",
+    "What causes earthquakes?", "How does memory work?", "What is antimatter?",
+    "How do nuclear reactors work?", "Why do we age?", "What is quantum computing?",
+    "How does the stock market work?", "What is CRISPR?", "How do languages evolve?",
+    "What causes inflation?", "How do social media algorithms work?"
+  ];
 
   let currentTopic = '', currentLevel = 'simple';
   let explanations = { simple: null, intermediate: null, expert: null };
+  let speechUtterance = null;
+  let isSpeaking = false;
+  let quizData = null;
+  let quizAnswers = {};
+
+  // ── PROGRESS BAR ──
+  function startProgress() {
+    const bar = document.getElementById('progressBar');
+    bar.style.width = '0%';
+    bar.classList.add('active');
+    let w = 0;
+    const iv = setInterval(() => {
+      w += Math.random() * 8;
+      if (w > 85) { clearInterval(iv); w = 85; }
+      bar.style.width = w + '%';
+    }, 200);
+    return iv;
+  }
+  function finishProgress(iv) {
+    clearInterval(iv);
+    const bar = document.getElementById('progressBar');
+    bar.style.width = '100%';
+    setTimeout(() => { bar.classList.remove('active'); bar.style.width = '0%'; }, 500);
+  }
 
   // ── HISTORY ──
-  function getHistory() {
-    try { return JSON.parse(localStorage.getItem('grasp_history') || '[]'); } catch { return []; }
-  }
+  function getHistory() { try { return JSON.parse(localStorage.getItem('grasp_history') || '[]'); } catch { return []; } }
   function saveToHistory(topic) {
-    let history = getHistory();
-    history = history.filter(h => h.topic.toLowerCase() !== topic.toLowerCase());
-    history.unshift({ topic, time: Date.now() });
-    if (history.length > 50) history = history.slice(0, 50);
-    localStorage.setItem('grasp_history', JSON.stringify(history));
+    let h = getHistory().filter(x => x.topic.toLowerCase() !== topic.toLowerCase());
+    h.unshift({ topic, time: Date.now() });
+    if (h.length > 50) h = h.slice(0, 50);
+    localStorage.setItem('grasp_history', JSON.stringify(h));
     updateHistoryCount();
   }
   function updateHistoryCount() {
-    const history = getHistory();
-    const badge = document.getElementById('historyCount');
-    if (history.length > 0) { badge.textContent = history.length; badge.style.display = 'inline'; }
-    else { badge.style.display = 'none'; }
+    const h = getHistory(); const b = document.getElementById('historyCount');
+    if (h.length > 0) { b.textContent = h.length; b.style.display = 'inline'; } else { b.style.display = 'none'; }
   }
   function openHistory() {
-    const history = getHistory();
-    const list = document.getElementById('historyList');
-    if (history.length === 0) {
-      list.innerHTML = '<div class="history-empty">No searches yet.<br>Start exploring to build your history.</div>';
-    } else {
-      list.innerHTML = history.map(h => {
-        const date = new Date(h.time);
-        const timeStr = date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) + ' · ' + date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-        return `<div class="history-item" onclick="historySearch('${h.topic.replace(/'/g, "\\'")}')">
-          <div class="history-item-topic">${h.topic}</div>
-          <div class="history-item-meta">${timeStr}</div>
-        </div>`;
+    const h = getHistory(); const list = document.getElementById('historyList');
+    if (!h.length) { list.innerHTML = '<div class="history-empty">No searches yet.<br>Start exploring to build your history.</div>'; }
+    else {
+      list.innerHTML = h.map(x => {
+        const d = new Date(x.time);
+        const t = d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) + ' · ' + d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+        return `<div class="history-item" onclick="historySearch('${x.topic.replace(/'/g, "\\'")}')"><div class="history-item-topic">${x.topic}</div><div class="history-item-meta">${t}</div></div>`;
       }).join('');
     }
     document.getElementById('historyOverlay').classList.remove('hidden');
@@ -282,32 +379,40 @@
   function historySearch(topic) { closeHistory(); startSearch(topic); }
 
   // ── NAV ──
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
-  });
+  window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20); });
   function goHome() {
+    stopSpeech();
     document.getElementById('heroSection').style.display = 'flex';
     document.getElementById('resultSection').classList.remove('visible');
     document.getElementById('searchInput').value = '';
-    document.getElementById('searchInput').focus();
+    document.getElementById('relatedSection').style.display = 'none';
     window.scrollTo(0, 0);
+  }
+
+  // ── SURPRISE ME ──
+  function surpriseMe() {
+    const topic = SURPRISE_TOPICS[Math.floor(Math.random() * SURPRISE_TOPICS.length)];
+    document.getElementById('searchInput').value = topic;
+    startSearch(topic);
   }
 
   // ── SEARCH ──
   document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') handleSearch(); });
   document.getElementById('newSearchInput').addEventListener('keydown', e => { if (e.key === 'Enter') handleNewSearch(); });
-
-  function quickSearch(topic) { document.getElementById('searchInput').value = topic; handleSearch(); }
+  function quickSearch(t) { document.getElementById('searchInput').value = t; handleSearch(); }
   function handleSearch() { const t = document.getElementById('searchInput').value.trim(); if (t) startSearch(t); }
   function handleNewSearch() { const t = document.getElementById('newSearchInput').value.trim(); if (t) { document.getElementById('newSearchInput').value = ''; startSearch(t); } }
 
   async function startSearch(topic) {
+    stopSpeech();
     currentTopic = topic;
     explanations = { simple: null, intermediate: null, expert: null };
     currentLevel = 'simple';
+    quizData = null; quizAnswers = {};
 
     document.getElementById('heroSection').style.display = 'none';
     document.getElementById('resultSection').classList.add('visible');
+    document.getElementById('relatedSection').style.display = 'none';
     window.scrollTo(0, 0);
     document.getElementById('resultTopic').textContent = topic;
 
@@ -316,54 +421,62 @@
     document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('panel-simple').classList.add('active');
     updateComplexityBar('simple');
-
     saveToHistory(topic);
 
-    // Developer question — no API call needed
+    // Developer question
     if (DEVELOPER_KEYWORDS.test(topic)) {
-      ['simple', 'intermediate', 'expert'].forEach(l => {
+      ['simple','intermediate','expert'].forEach(l => {
         explanations[l] = DEVELOPER_RESPONSE;
         document.getElementById(`content-${l}`).innerHTML = `<p>${DEVELOPER_RESPONSE}</p>`;
       });
       return;
     }
 
-    // Loading states
+    // Loading
     ['simple', 'intermediate', 'expert'].forEach(level => {
-      document.getElementById(`content-${level}`).innerHTML = `
-        <div class="loading-state">
-          <div class="loading-dots"><span></span><span></span><span></span></div>
-          Generating ${level} explanation...
-        </div>`;
+      document.getElementById(`content-${level}`).innerHTML = `<div class="loading-state"><div class="loading-dots"><span></span><span></span><span></span></div>Generating ${level} explanation...</div>`;
     });
 
+    const iv = startProgress();
     await Promise.all([
       fetchExplanation(topic, 'simple'),
       fetchExplanation(topic, 'intermediate'),
-      fetchExplanation(topic, 'expert')
+      fetchExplanation(topic, 'expert'),
+      fetchRelated(topic)
     ]);
+    finishProgress(iv);
   }
 
   async function fetchExplanation(topic, level) {
     try {
-      const response = await fetch('/api/explain', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic, level })
-      });
-      const data = await response.json();
+      const r = await fetch('/api/explain', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ topic, level }) });
+      const data = await r.json();
       if (data.error) { document.getElementById(`content-${level}`).innerHTML = `<div class="error-msg">${data.error}</div>`; return; }
       const text = data.text || 'Could not generate explanation.';
       explanations[level] = text;
       const clean = text.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1').replace(/#{1,6}\s/g, '').trim();
       const paragraphs = clean.split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('');
       document.getElementById(`content-${level}`).innerHTML = paragraphs;
-    } catch (err) {
-      document.getElementById(`content-${level}`).innerHTML = `<div class="error-msg">Something went wrong. Please try again.</div>`;
-    }
+    } catch { document.getElementById(`content-${level}`).innerHTML = `<div class="error-msg">Something went wrong. Please try again.</div>`; }
   }
 
+  async function fetchRelated(topic) {
+    try {
+      const r = await fetch('/api/explain', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ topic, level: 'related' }) });
+      const data = await r.json();
+      if (data.text) {
+        const topics = data.text.split('\n').map(t => t.replace(/^[-•*\d.]+\s*/, '').trim()).filter(t => t.length > 2 && t.length < 60).slice(0, 5);
+        if (topics.length) {
+          document.getElementById('relatedChips').innerHTML = topics.map(t => `<button class="related-chip" onclick="quickSearch('${t.replace(/'/g,"\\'")}')">→ ${t}</button>`).join('');
+          document.getElementById('relatedSection').style.display = 'block';
+        }
+      }
+    } catch {}
+  }
+
+  // ── LEVEL SWITCH ──
   function switchLevel(level) {
+    stopSpeech();
     currentLevel = level;
     document.querySelectorAll('.level-tab').forEach(t => t.classList.remove('active'));
     document.querySelector(`[data-level="${level}"]`).classList.add('active');
@@ -371,7 +484,6 @@
     document.getElementById(`panel-${level}`).classList.add('active');
     updateComplexityBar(level);
   }
-
   function updateComplexityBar(level) {
     const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3')];
     bars.forEach(b => { b.className = 'bar-seg'; });
@@ -380,22 +492,114 @@
     else { bars.forEach(b => { b.classList.add('filled'); b.dataset.level = 'expert'; }); }
   }
 
-  function copyExplanation() {
+  // ── READ ALOUD ──
+  function toggleReadAloud() {
+    if (isSpeaking) { stopSpeech(); return; }
     const text = explanations[currentLevel];
-    if (!text) return;
-    navigator.clipboard.writeText(`${currentTopic} (${currentLevel} level)\n\n${text}\n\n— Grasp`);
-    const btn = event.target; btn.textContent = 'Copied!';
-    setTimeout(() => btn.textContent = 'Copy explanation', 2000);
+    if (!text || !window.speechSynthesis) return;
+    stopSpeech();
+    speechUtterance = new SpeechSynthesisUtterance(text);
+    speechUtterance.rate = 0.95; speechUtterance.pitch = 1;
+    speechUtterance.onend = () => { isSpeaking = false; updateReadAloudBtn(); };
+    speechUtterance.onerror = () => { isSpeaking = false; updateReadAloudBtn(); };
+    window.speechSynthesis.speak(speechUtterance);
+    isSpeaking = true; updateReadAloudBtn();
+  }
+  function stopSpeech() {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    isSpeaking = false; updateReadAloudBtn();
+  }
+  function updateReadAloudBtn() {
+    const btn = document.getElementById('readAloudBtn');
+    if (isSpeaking) { btn.classList.add('speaking'); btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop`; }
+    else { btn.classList.remove('speaking'); btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Read Aloud`; }
   }
 
-  function shareGrasp() {
-    if (navigator.share) {
-      navigator.share({ title: 'Grasp', text: `I just learned about "${currentTopic}" on Grasp!`, url: window.location.href });
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      const btn = event.target; btn.textContent = 'Link copied!';
-      setTimeout(() => btn.textContent = 'Share', 2000);
+  // ── QUIZ ──
+  async function startQuiz() {
+    document.getElementById('quizTopic').textContent = currentTopic;
+    document.getElementById('quizContent').innerHTML = `<div class="quiz-loading"><div class="loading-dots"><span></span><span></span><span></span></div>Generating quiz...</div>`;
+    document.getElementById('quizOverlay').classList.remove('hidden');
+    quizAnswers = {};
+
+    try {
+      const r = await fetch('/api/explain', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ topic: currentTopic, level: 'quiz' }) });
+      const data = await r.json();
+      if (!data.text) throw new Error('No quiz data');
+
+      let parsed;
+      try {
+        const clean = data.text.replace(/```json|```/g, '').trim();
+        parsed = JSON.parse(clean);
+      } catch { throw new Error('Parse error'); }
+
+      quizData = parsed.questions;
+      renderQuiz();
+    } catch {
+      document.getElementById('quizContent').innerHTML = `<p style="color:var(--text-muted);font-size:14px">Could not generate quiz. Try again.</p><button class="quiz-close-btn" onclick="closeQuiz()">Close</button>`;
     }
+  }
+
+  function renderQuiz() {
+    if (!quizData) return;
+    let html = '';
+    quizData.forEach((q, i) => {
+      html += `<div class="quiz-question" id="qq-${i}">
+        <div class="quiz-q-num">Question ${i + 1} of ${quizData.length}</div>
+        <div class="quiz-q-text">${q.question}</div>
+        <div class="quiz-options">
+          ${q.options.map((opt, j) => `<button class="quiz-option" data-qi="${i}" data-oi="${j}" onclick="answerQuiz(${i},${j})">${opt}</button>`).join('')}
+        </div>
+        <div class="quiz-explanation" id="qe-${i}">${q.explanation}</div>
+      </div>`;
+    });
+    html += `<div id="quizScoreSection" style="display:none">
+      <div class="quiz-score"><div class="quiz-score-num" id="quizScoreNum"></div><div class="quiz-score-label" id="quizScoreLabel"></div></div>
+      <button class="quiz-close-btn" onclick="closeQuiz()">Back to Grasp</button>
+      <button class="quiz-retry-btn" onclick="startQuiz()">Try again</button>
+    </div>`;
+    document.getElementById('quizContent').innerHTML = html;
+  }
+
+  function answerQuiz(qi, oi) {
+    if (quizAnswers[qi] !== undefined) return;
+    quizAnswers[qi] = oi;
+    const correct = quizData[qi].correct;
+    const options = document.querySelectorAll(`[data-qi="${qi}"]`);
+    options.forEach((btn, j) => {
+      btn.classList.add('answered');
+      if (j === correct) btn.classList.add('correct');
+      else if (j === oi && oi !== correct) btn.classList.add('wrong');
+    });
+    document.getElementById(`qe-${qi}`).style.display = 'block';
+
+    if (Object.keys(quizAnswers).length === quizData.length) {
+      setTimeout(showQuizScore, 800);
+    }
+  }
+
+  function showQuizScore() {
+    const score = quizData.filter((q, i) => quizAnswers[i] === q.correct).length;
+    const total = quizData.length;
+    const pct = Math.round((score / total) * 100);
+    document.getElementById('quizScoreNum').textContent = `${score}/${total}`;
+    document.getElementById('quizScoreLabel').textContent = pct >= 80 ? 'Excellent! You really grasped it.' : pct >= 50 ? 'Good effort! Read through again.' : 'Keep learning — you\'ll get there.';
+    document.getElementById('quizScoreSection').style.display = 'block';
+    document.getElementById('quizScoreSection').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function closeQuiz() { document.getElementById('quizOverlay').classList.add('hidden'); }
+
+  // ── COPY / SHARE ──
+  function copyExplanation() {
+    const text = explanations[currentLevel]; if (!text) return;
+    navigator.clipboard.writeText(`${currentTopic} (${currentLevel} level)\n\n${text}\n\n— Grasp`);
+    const btn = event.target.closest('button'); btn.innerHTML = '✓ Copied!';
+    setTimeout(() => btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy`, 2000);
+  }
+  function shareGrasp() {
+    if (navigator.share) { navigator.share({ title: 'Grasp', text: `I just learned about "${currentTopic}" on Grasp!`, url: window.location.href }); }
+    else { navigator.clipboard.writeText(window.location.href); const btn = event.target.closest('button'); btn.textContent = 'Link copied!'; setTimeout(() => btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share`, 2000); }
   }
 
   updateHistoryCount();
