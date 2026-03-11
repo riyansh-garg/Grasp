@@ -54,10 +54,8 @@
     /* RESULT */
     #resultSection { display: none; max-width: 760px; margin: 0 auto; padding: 100px 24px 120px; }
     #resultSection.visible { display: block; }
-
-    /* TOP BAR in result */
-    .result-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 48px; }
-    .new-search-btn { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); background: transparent; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: color 0.2s; padding: 0; }
+    .result-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 48px; gap: 16px; }
+    .new-search-btn { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); background: transparent; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: color 0.2s; padding: 0; flex-shrink: 0; }
     .new-search-btn:hover { color: var(--accent); }
     .new-search-input-wrap { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border-light); border-radius: 4px; padding: 0 8px 0 16px; flex: 1; max-width: 460px; transition: border-color 0.2s; }
     .new-search-input-wrap:focus-within { border-color: var(--accent); }
@@ -65,7 +63,6 @@
     #newSearchInput::placeholder { color: var(--text-dim); }
     #newSearchBtn { padding: 7px 16px; background: var(--accent); color: #0a0a0a; border: none; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
     #newSearchBtn:hover { background: var(--accent-bright); }
-
     .result-topic { font-family: 'Instrument Serif', serif; font-size: clamp(28px, 4vw, 42px); letter-spacing: -1px; margin-bottom: 8px; }
     .result-meta { font-size: 12px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 40px; }
     .level-tabs { display: flex; margin-bottom: 40px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; width: fit-content; }
@@ -117,8 +114,11 @@
     .history-clear:hover { color: var(--expert); border-color: var(--expert); }
     .history-count { font-size: 10px; background: rgba(200,184,154,0.12); color: var(--accent); padding: 2px 7px; border-radius: 10px; letter-spacing: 0.5px; }
 
-    footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 16px 48px; display: flex; align-items: center; border-top: 1px solid var(--border); background: rgba(10,10,10,0.95); backdrop-filter: blur(12px); z-index: 50; }
+    /* FOOTER */
+    footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 14px 48px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); background: rgba(10,10,10,0.95); backdrop-filter: blur(12px); z-index: 50; }
     .footer-text { font-size: 11px; color: var(--text-dim); letter-spacing: 0.5px; }
+    .footer-credit { font-size: 11px; color: var(--text-dim); letter-spacing: 0.5px; }
+    .footer-credit span { color: var(--accent); }
 
     @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -129,10 +129,11 @@
       nav { padding: 16px 20px; }
       .hero { padding: 100px 20px 60px; }
       .explanation-card { padding: 24px; font-size: 15px; }
-      footer { padding: 12px 24px; }
+      footer { padding: 12px 20px; }
+      .footer-credit { display: none; }
       .level-tab { padding: 10px 16px; font-size: 12px; }
       .nav-tag { display: none; }
-      .result-topbar { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .result-topbar { flex-direction: column; align-items: flex-start; }
       .new-search-input-wrap { max-width: 100%; width: 100%; }
       .history-panel { max-width: 100%; }
     }
@@ -204,7 +205,6 @@
       <button id="newSearchBtn" onclick="handleNewSearch()">Explain</button>
     </div>
   </div>
-
   <div class="result-topic" id="resultTopic"></div>
   <div class="result-meta">Simple · Intermediate · Expert</div>
   <div class="complexity-bar">
@@ -227,11 +227,17 @@
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
   <span class="footer-text">Grasp — Understand Anything</span>
+  <span class="footer-credit">Crafted with care by <span>Riyansh Garg</span></span>
 </footer>
 
 <script>
+  const DEVELOPER_RESPONSE = "Grasp was conceived, designed, and built by Riyansh Garg — a developer with a passion for making knowledge genuinely accessible to everyone, at every level of understanding. The idea was simple: no matter who you are or what your background is, you deserve a clear, honest explanation of anything you're curious about.";
+
+  const DEVELOPER_KEYWORDS = /who (made|built|created|developed|founded|is behind|designed)|developer|founder|creator|author|owner|riyansh|about (this|grasp)|who are you|tell me about (this|grasp)/i;
+
   let currentTopic = '', currentLevel = 'simple';
   let explanations = { simple: null, intermediate: null, expert: null };
 
@@ -241,7 +247,6 @@
   }
   function saveToHistory(topic) {
     let history = getHistory();
-    // Remove duplicate if exists
     history = history.filter(h => h.topic.toLowerCase() !== topic.toLowerCase());
     history.unshift({ topic, time: Date.now() });
     if (history.length > 50) history = history.slice(0, 50);
@@ -251,12 +256,8 @@
   function updateHistoryCount() {
     const history = getHistory();
     const badge = document.getElementById('historyCount');
-    if (history.length > 0) {
-      badge.textContent = history.length;
-      badge.style.display = 'inline';
-    } else {
-      badge.style.display = 'none';
-    }
+    if (history.length > 0) { badge.textContent = history.length; badge.style.display = 'inline'; }
+    else { badge.style.display = 'none'; }
   }
   function openHistory() {
     const history = getHistory();
@@ -275,28 +276,15 @@
     }
     document.getElementById('historyOverlay').classList.remove('hidden');
   }
-  function closeHistory() {
-    document.getElementById('historyOverlay').classList.add('hidden');
-  }
-  function closeHistoryOnOverlay(e) {
-    if (e.target === document.getElementById('historyOverlay')) closeHistory();
-  }
-  function clearHistory() {
-    localStorage.removeItem('grasp_history');
-    updateHistoryCount();
-    openHistory();
-  }
-  function historySearch(topic) {
-    closeHistory();
-    document.getElementById('searchInput').value = topic;
-    startSearch(topic);
-  }
+  function closeHistory() { document.getElementById('historyOverlay').classList.add('hidden'); }
+  function closeHistoryOnOverlay(e) { if (e.target === document.getElementById('historyOverlay')) closeHistory(); }
+  function clearHistory() { localStorage.removeItem('grasp_history'); updateHistoryCount(); openHistory(); }
+  function historySearch(topic) { closeHistory(); startSearch(topic); }
 
   // ── NAV ──
   window.addEventListener('scroll', () => {
     document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
   });
-
   function goHome() {
     document.getElementById('heroSection').style.display = 'flex';
     document.getElementById('resultSection').classList.remove('visible');
@@ -309,39 +297,36 @@
   document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') handleSearch(); });
   document.getElementById('newSearchInput').addEventListener('keydown', e => { if (e.key === 'Enter') handleNewSearch(); });
 
-  function quickSearch(topic) {
-    document.getElementById('searchInput').value = topic;
-    handleSearch();
-  }
-  function handleSearch() {
-    const topic = document.getElementById('searchInput').value.trim();
-    if (topic) startSearch(topic);
-  }
-  function handleNewSearch() {
-    const topic = document.getElementById('newSearchInput').value.trim();
-    if (topic) {
-      document.getElementById('newSearchInput').value = '';
-      startSearch(topic);
-    }
-  }
+  function quickSearch(topic) { document.getElementById('searchInput').value = topic; handleSearch(); }
+  function handleSearch() { const t = document.getElementById('searchInput').value.trim(); if (t) startSearch(t); }
+  function handleNewSearch() { const t = document.getElementById('newSearchInput').value.trim(); if (t) { document.getElementById('newSearchInput').value = ''; startSearch(t); } }
 
   async function startSearch(topic) {
     currentTopic = topic;
     explanations = { simple: null, intermediate: null, expert: null };
     currentLevel = 'simple';
 
-    // Show result section
     document.getElementById('heroSection').style.display = 'none';
     document.getElementById('resultSection').classList.add('visible');
     window.scrollTo(0, 0);
     document.getElementById('resultTopic').textContent = topic;
 
-    // Reset tabs
     document.querySelectorAll('.level-tab').forEach(t => t.classList.remove('active'));
     document.querySelector('[data-level="simple"]').classList.add('active');
     document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('panel-simple').classList.add('active');
     updateComplexityBar('simple');
+
+    saveToHistory(topic);
+
+    // Developer question — no API call needed
+    if (DEVELOPER_KEYWORDS.test(topic)) {
+      ['simple', 'intermediate', 'expert'].forEach(l => {
+        explanations[l] = DEVELOPER_RESPONSE;
+        document.getElementById(`content-${l}`).innerHTML = `<p>${DEVELOPER_RESPONSE}</p>`;
+      });
+      return;
+    }
 
     // Loading states
     ['simple', 'intermediate', 'expert'].forEach(level => {
@@ -352,10 +337,6 @@
         </div>`;
     });
 
-    // Save to history
-    saveToHistory(topic);
-
-    // Fetch all 3
     await Promise.all([
       fetchExplanation(topic, 'simple'),
       fetchExplanation(topic, 'intermediate'),
@@ -371,10 +352,7 @@
         body: JSON.stringify({ topic, level })
       });
       const data = await response.json();
-      if (data.error) {
-        document.getElementById(`content-${level}`).innerHTML = `<div class="error-msg">${data.error}</div>`;
-        return;
-      }
+      if (data.error) { document.getElementById(`content-${level}`).innerHTML = `<div class="error-msg">${data.error}</div>`; return; }
       const text = data.text || 'Could not generate explanation.';
       explanations[level] = text;
       const clean = text.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1').replace(/#{1,6}\s/g, '').trim();
@@ -406,8 +384,7 @@
     const text = explanations[currentLevel];
     if (!text) return;
     navigator.clipboard.writeText(`${currentTopic} (${currentLevel} level)\n\n${text}\n\n— Grasp`);
-    const btn = event.target;
-    btn.textContent = 'Copied!';
+    const btn = event.target; btn.textContent = 'Copied!';
     setTimeout(() => btn.textContent = 'Copy explanation', 2000);
   }
 
@@ -416,13 +393,11 @@
       navigator.share({ title: 'Grasp', text: `I just learned about "${currentTopic}" on Grasp!`, url: window.location.href });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      const btn = event.target;
-      btn.textContent = 'Link copied!';
+      const btn = event.target; btn.textContent = 'Link copied!';
       setTimeout(() => btn.textContent = 'Share', 2000);
     }
   }
 
-  // Init
   updateHistoryCount();
 </script>
 </body>
