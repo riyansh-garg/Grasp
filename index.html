@@ -538,7 +538,7 @@
   document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') handleSearch(); });
   document.getElementById('newSearchInput').addEventListener('keydown', e => { if (e.key === 'Enter') handleNewSearch(); });
   function quickSearch(t) { document.getElementById('searchInput').value = t; handleSearch(); }
-  function handleSearch() { const t = document.getElementById('searchInput').value.trim(); if (t) startSearch(t); }
+  function handleSearch() { const t = document.getElementById('searchInput').value.trim(); if (t) { gtag('event', 'search', { search_term: t }); startSearch(t); } }
   function handleNewSearch() { const t = document.getElementById('newSearchInput').value.trim(); if (t) { document.getElementById('newSearchInput').value = ''; startSearch(t); } }
 
   async function startSearch(topic) {
